@@ -10,4 +10,7 @@ class Book extends Model
     use HasFactory;
     protected $id = 'ISBN';
     public $incrementing = false;
+    function category() {
+        return $this->belongsTo(category::class);
+    }
 }
