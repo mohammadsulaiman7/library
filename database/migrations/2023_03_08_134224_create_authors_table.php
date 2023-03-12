@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('books', function (Blueprint $table) {
-            $table->char('ISBN' ,13)->primary();
-            $table->string('title');
-            $table->decimal('price');
-            $table->decimal('mortgage');
-            $table->foreignId('category_id')->constrained();
-            $table->timestamps();
+        Schema::create('authors', function (Blueprint $table) {
+            $table->id();
+            $table->string('name' , 100);
         });
     }
 
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('books');
+        Schema::dropIfExists('authors');
     }
 };

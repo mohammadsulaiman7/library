@@ -27,3 +27,36 @@ Route::resource('books' , BookController::class);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+
+//session training
+
+Route::get('strg_path' , function() {
+    return  storage_path('framework/sessions');
+});
+
+//put & get session element
+Route::get('sess' , function() {
+    session()->put('user' , 'ahmad');
+    return  session()->get('user') . " is added with key user";
+});
+
+//has
+Route::get('has-sess' , function() {
+    if (session()->has('user'))
+        return ' There is $_SESSION[USER] = ' . session()->get('user');
+    else
+        return "no ses...";
+});
+
+//forget
+Route::get('forget-sess' , function() {
+    session()->forget('user');
+    return  session()->get('user') . " is added with key user";    
+});
+
+//session()->flush(): delete every key
+//session()->flash('key' , 'value' )
+//session->pull('key') //get() then forget()

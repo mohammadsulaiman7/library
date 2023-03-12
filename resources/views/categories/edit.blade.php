@@ -9,6 +9,8 @@
                 <h4>Add Category </h4>
                 <input type="text" name="name" value="{{ $category->name }}" placeholder="category name" maxlength="50" class="form-control my-2">
                 <input type="submit" value="save category" class="btn btn-primary my-2">
+                <input type="reset" value="تصفير" class="btn btn-outline-primary my-2">
+                <a href="{{ route('categories.index') }}" class="btn btn-outline-secondary my-2">تراجع</a>
             </form>
         </div>
     </div>

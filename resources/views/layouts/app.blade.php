@@ -13,6 +13,8 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
+
+    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -71,10 +73,23 @@
                 </div>
             </div>
         </nav>
+        <div class="msgs m-3">
+            @if(session()->has('success'))
+            <div class="alert alert-success w-50 mx-auto">
+                {{ session()->get('success') }}
+            </div>
+            @endif
+            @if(session()->has('error'))
+            <div class="alert alert-danger w-50 mx-auto">
+                {{ session()->get('error') }}
+            </div>
+            @endif
+        </div>
 
         <main class="py-4">
             @yield('content')
         </main>
     </div>
+    <script src="{{ asset('js/all.min.js') }}"></script>
 </body>
 </html>

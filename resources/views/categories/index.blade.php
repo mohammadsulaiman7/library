@@ -16,13 +16,13 @@
                     <tr>
                         <td>{{$category->id}}</td>
                         <td>{{$category->name}}</td>
-                        <td><a href="{{ route('categories.edit' , ['category' => $category]) }}" class="btn btn-primary">edit</a> | 
-                        <a href="{{ route('categories.show' , ['category' => $category]) }}"  class="btn btn-success">view</a> |
+                        <td><a href="{{ route('categories.edit' , ['category' => $category]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a> | 
+                        <a href="{{ route('categories.show' , ['category' => $category]) }}"  class="btn btn-outline-success btn-sm"><i class="fas fa-eye"></i></a> |
 
                         <form action="{{ route('categories.destroy' , ['category' => $category]) }}" method="post" onsubmit="return confirm('delete {{ $category->name }}')" class="d-inline-block">
                             @csrf
                             @method('delete')
-                            <input type="submit" value="delete" class="btn btn-danger">
+                            <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>                            
                         </form> 
 
                         </td>                      

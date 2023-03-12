@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     use HasFactory;
-    protected $id = 'ISBN';
+    protected $primaryKey = 'ISBN';
     public $incrementing = false;
+    public $guarded = [];
     function category() {
-        return $this->belongsTo(category::class);
+        return $this->belongsTo(Category::class , 'category_id');
     }
 }

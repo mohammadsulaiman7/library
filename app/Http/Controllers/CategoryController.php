@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::get();
-        return view('categories.index' , ['categories' => $categories]);
+        return view('categories.index', ['categories' => $categories]);
     }
 
     /**
@@ -36,12 +36,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:100'
+        ]);
         $category = new Category();
         $category->name = $request->name;
         if ($category->save())
-            return redirect('categories');
+            // return redirect('categories');            
+            return redirect()->route('categories.index')->with('success', 'category saved successfully');
         else
-            return "error in adding category";
+            return  back()->with('error',  "error in adding category");
     }
 
     /**
@@ -52,7 +56,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('categories.view' , compact('category'));
+        return view('categories.view', compact('category'));
     }
 
     /**
@@ -64,7 +68,7 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         // return view('categories.edit' )->with('category' , $category);
-        return view('categories.edit' , compact('category'));
+        return view('categories.edit', compact('category'));
     }
 
     /**
@@ -76,11 +80,15 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
+        $request->validate([
+            'name' => 'required|string|max:100'
+        ]);
         $category->name = $request->name;
         if ($category->save())
-            return redirect('categories');
+            // return redirect('categories');
+            return redirect()->route('categories.index')->with('success', 'category saved successfully');
         else
-            return "error in updating category";
+            return  back()->with('error',  "error in updating category");
     }
 
     /**
@@ -92,8 +100,8 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         if ($category->delete())
-            return redirect('categories');
+            return redirect()->route('categories.index')->with('success', 'category deleted successfully');
         else
-            return "error in deleting category";
+            return  back()->with('error',  "error in deleting category");
     }
 }
