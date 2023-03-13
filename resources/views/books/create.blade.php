@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
         <h3>Add book </h3>
-            <form action="{{route('books.store')}}" method="post" class="col-md-6 offset-md-3">
+            <form action="{{route('books.store')}}" method="post" enctype="multipart/form-data" class="col-md-6 offset-md-3">
                 @csrf
                 <h4>Add book </h4>
                 <input type="text" name="ISBN" placeholder="book ISBN" maxlength="13" minlength="13" pattern="[0-9]{13}" class="form-control my-2" required>
@@ -32,6 +32,7 @@
                         {{ $message }}
                     @enderror
                 </div>
+                <input type="file" name="cover" class="form-control my-2" accept="image/*">
                 <input type="submit" value="add book" class="btn btn-primary my-2">
                 <input type="reset" value="تصفير" class="btn btn-outline-primary my-2">
                 <a href="{{ route('books.index') }}" class="btn btn-outline-secondary my-2">تراجع</a>

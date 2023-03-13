@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\book;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -41,11 +42,25 @@ class BookController extends Controller
         $request->validate([
             'ISBN' => 'required|integer',
             'title' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id'
+            'category_id' => 'required|exists:categories,id',
+            'cover' => 'image|mimes:jpg,png,jpeg|max:10000'
         ]);
-        
-        if (Book::create($request->all()))
+        $book = Book::create($request->all()); // not requiered
+        if ($book)
+        {
+            if ($request->has('cover')) {
+                $coverFile = $request->file('cover');
+                $fileName = $book->ISBN . '.' .  $coverFile->extension();
+                // $coverFile->storeAs('public/book-images' ,  $fileName);
+                $coverFile->storeAs('book-images' ,  $fileName , 'public');
+                $book->cover = $fileName;
+            }
+            else
+                $book->cover = 'no-image.png';
+            $book->save();
+
             return redirect()->route('books.index')->with('success', 'book saved successfully');
+        }
         else
             return  back()->with('error',  "error in adding book");
     }
@@ -85,13 +100,22 @@ class BookController extends Controller
         $request->validate([
             'ISBN' => 'required|integer',
             'title' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id'
-        ]);
-        
-        if ($book->update($request->all()) )
-            return redirect()->route('books.index')->with('success', 'book saved successfully');
-        else
-            return  back()->with('error',  "error in updating book");
+            'category_id' => 'required|exists:categories,id',
+            'cover' => 'image|mimes:jpg,png,jpeg|max:10000'
+    ]);
+    if ($book->update($request->all())) {
+        if ($request->has('cover')) {
+            $coverFile = $request->file('cover');
+            $fileName = $book->ISBN . '.' .  $coverFile->extension();
+            $coverFile->storeAs('public/book-images' ,  $fileName);
+            $book->cover = $fileName;
+            $book->save();
+        }        
+
+        return redirect()->route('books.index')->with('success', 'book saved successfully');
+    }
+    else
+        return  back()->with('error',  "error in adding book");
     }
 
     /**
@@ -101,9 +125,12 @@ class BookController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(book $book)
-    {
-        if ($book->delete())
+    {    
+        $coverFile =  'public/book-images/' . $book->cover ;    
+        if ($book->delete()) {
+            Storage::delete($coverFile);
             return redirect()->route('books.index')->with('success', 'book deleted successfully');
+        }
         else
             return  back()->with('error',  "error in deleting book");
     }

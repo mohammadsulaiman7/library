@@ -2,13 +2,10 @@
 @section('content')
     <div class="container">
         <div class="row">
-        <h3> كتب {{ $category->name }}  </h3>
-        <ul>
-            @foreach ($category->books as  $book)
-               <li>{{ $book->title }}</li> 
-            @endforeach            
-        </ul>
-           
+        <div class="col-6 offset-3">
+            
+            <img src="{{asset( 'storage/book-images/' . $book->cover) }}" alt="{{asset( 'storage/book-images/' . $book->cover) }}">
+        </div>
         </div>
     </div>
 @endsection

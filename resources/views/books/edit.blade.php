@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
         <h3>Add book </h3>
-            <form action="{{route('books.update' , ['book' => $book])}}" method="post" class="col-md-6 offset-md-3">
+            <form action="{{route('books.update' , ['book' => $book])}}" method="post" enctype="multipart/form-data" class="col-md-6 offset-md-3">
                 @csrf
                 @method('put')
                 <h4>Add book </h4>
@@ -30,6 +30,13 @@
                 </select>                
                 <div class="text-danger">
                     @error('category_id')
+                        {{ $message }}
+                    @enderror
+                </div>
+                <img src="{{ asset('storage/book-images/' . $book->cover) }}" alt="{{ asset('storage/book-images/' . $book->title) }}">
+                <input type="file" name="cover" class="form-control my-2" accept="image/*">
+                <div class="text-danger">
+                    @error('cover')
                         {{ $message }}
                     @enderror
                 </div>
