@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\book;
 use App\Models\Category;
+use App\Models\Author;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -28,7 +29,8 @@ class BookController extends Controller
     public function create()
     {
         $categories = Category::get();
-        return view('books.create' , compact('categories'));
+        $authors = Author::get();
+        return view('books.create' , compact('categories' , 'authors'));
     }
 
     /**
@@ -48,6 +50,8 @@ class BookController extends Controller
         $book = Book::create($request->all()); // not requiered
         if ($book)
         {
+            $authors= $request->authors;
+            $book->authors()->attach($authors);
             if ($request->has('cover')) {
                 $coverFile = $request->file('cover');
                 $fileName = $book->ISBN . '.' .  $coverFile->extension();
@@ -85,7 +89,8 @@ class BookController extends Controller
     public function edit(book $book)
     {
         $categories = Category::get();
-        return view('books.edit', compact('book'  , 'categories'));
+        $authors = Author::get();
+        return view('books.edit', compact('book'  , 'categories' , 'authors'));
     }
 
     /**
@@ -104,10 +109,13 @@ class BookController extends Controller
             'cover' => 'image|mimes:jpg,png,jpeg|max:10000'
     ]);
     if ($book->update($request->all())) {
+        $authors= $request->authors;
+        $book->authors()->sync($authors);
         if ($request->has('cover')) {
             $coverFile = $request->file('cover');
             $fileName = $book->ISBN . '.' .  $coverFile->extension();
-            $coverFile->storeAs('public/book-images' ,  $fileName);
+            // $coverFile->storeAs('public/book-images' ,  $fileName);
+            Storage::putFileAs('public/book-images' , $coverFile , $fileName );
             $book->cover = $fileName;
             $book->save();
         }        

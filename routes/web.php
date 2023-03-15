@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BookController;
+use App\Models\Book;
+use App\Models\Author;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +34,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 //session training
-
 Route::get('strg_path' , function() {
     return  storage_path('framework/sessions');
 });
@@ -60,3 +61,34 @@ Route::get('forget-sess' , function() {
 //session()->flush(): delete every key
 //session()->flash('key' , 'value' )
 //session->pull('key') //get() then forget()
+
+
+//m-m relation training
+Route::get('attach' , function() {
+   $book = Book::find('9780269088834');
+   $book->authors()->attach(1);
+});
+
+Route::get('detach' , function() {
+    $book = Book::find('9780269088834');
+    $book->authors()->detach(1);
+ });
+
+
+ Route::get('attach-model' , function() {
+    $book = Book::find('9780269088834');
+    $author = Author::find(2);
+    $book->authors()->attach($author);
+ });
+
+ Route::get('attach-many' , function() {
+    $book = Book::find('9780943883014');
+    $book->authors()->attach([5 , 7]);
+ });
+
+ Route::get('sync' , function() {
+    $book = Book::find('9780943883014');
+    $book->authors()->sync([1 , 3]);
+ });
+ 
+ 
