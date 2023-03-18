@@ -30,10 +30,10 @@
 
                 <select multiple name="authors[]" class="ui search selection dropdown">
                     @foreach ($authors as $author)
-                        <option value="{{ $author->id }}">{{ $author->name }}</option>
+                        <option value="{{ $author->id }}" @selected(in_array($author->id, $authorIds)) >{{ $author->name }}</option>
                     @endforeach
                 </select>
-
+                
                 <select name="category_id" class="form-control  my-2">
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}" @selected($book->category_id == $category->id)>{{ $category->name }}</option>

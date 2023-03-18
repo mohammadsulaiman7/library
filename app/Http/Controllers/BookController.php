@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\book;
+use App\Models\Book;
 use App\Models\Category;
 use App\Models\Author;
 use Illuminate\Http\Request;
@@ -42,7 +42,7 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'ISBN' => 'required|integer',
+            'ISBN' => 'required|integer|unique:books',
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'cover' => 'image|mimes:jpg,png,jpeg|max:10000'
@@ -75,7 +75,7 @@ class BookController extends Controller
      * @param  \App\Models\book  $book
      * @return \Illuminate\Http\Response
      */
-    public function show(book $book)
+    public function show(Book $book)
     {
         return view('books.view', compact('book'));
     }
@@ -86,11 +86,12 @@ class BookController extends Controller
      * @param  \App\Models\book  $book
      * @return \Illuminate\Http\Response
      */
-    public function edit(book $book)
+    public function edit(Book $book)
     {
         $categories = Category::get();
         $authors = Author::get();
-        return view('books.edit', compact('book'  , 'categories' , 'authors'));
+        $authorIds = $book->authors->modelKeys();
+        return view('books.edit', compact('book'  , 'categories' , 'authors', 'authorIds'));
     }
 
     /**
@@ -100,10 +101,10 @@ class BookController extends Controller
      * @param  \App\Models\book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, book $book)
+    public function update(Request $request, Book $book)
     {
         $request->validate([
-            'ISBN' => 'required|integer',
+            'ISBN' => 'required|integer|unique:books,ISBN,' . $book->ISBN . ',ISBN',
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'cover' => 'image|mimes:jpg,png,jpeg|max:10000'
@@ -132,7 +133,7 @@ class BookController extends Controller
      * @param  \App\Models\book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy(book $book)
+    public function destroy(Book $book)
     {    
         $coverFile =  'public/book-images/' . $book->cover ;    
         if ($book->delete()) {
