@@ -97,7 +97,6 @@ Route::get('detach', function () {
     $book->authors()->detach(1);
 });
 
-
 Route::get('attach-model', function () {
     $book = Book::find('9780269088834');
     $author = Author::find(2);

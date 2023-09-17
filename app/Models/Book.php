@@ -13,7 +13,7 @@ class Book extends Model
     public $guarded = ['authors'];
 
     function category() {
-        return $this->belongsTo(Category::class , 'category_id');
+        return $this->belongsTo(Category::class ,'category_id');
     }
 
     function authors() {

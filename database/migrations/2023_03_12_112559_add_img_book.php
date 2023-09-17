@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('cover' ,50)->default('no-image.png')->after('mortgage');
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *

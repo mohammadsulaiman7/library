@@ -19,6 +19,7 @@ class BookController extends Controller
     {
         $books = Book::with('category')->paginate(6);
         return view('books.index', ['books' => $books]);
+        
     }
 
     /**

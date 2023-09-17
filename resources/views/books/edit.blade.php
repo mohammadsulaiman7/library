@@ -6,7 +6,7 @@
             <form action="{{ route('books.update', ['book' => $book]) }}" method="post" enctype="multipart/form-data"
                 class="col-md-6 offset-md-3">
                 @csrf
-                @method('put')
+                @method('PUT')
                 <h4>Add book </h4>
                 <input type="text" name="ISBN" value="{{ $book->ISBN }}" placeholder="book ISBN" maxlength="13"
                     minlength="13" pattern="[0-9]{13}" class="form-control my-2" required>
@@ -30,7 +30,7 @@
 
                 <select multiple name="authors[]" class="ui search selection dropdown">
                     @foreach ($authors as $author)
-                        <option value="{{ $author->id }}" @selected(in_array($author->id, $authorIds)) >{{ $author->name }}</option>
+                        <option value="{{ $author->id }}" @selected(in_array($author->id, $authorIds))>{{ $author->name }}</option>
                     @endforeach
                 </select>
                 
